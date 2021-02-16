@@ -25,6 +25,7 @@ def play_2048():
         else: continue
 
 def is_replay():
+    # score comes in as '1024\n+4'
     score = int(driver.find_element_by_class_name("score-container").text.split('\n')[0])
     if score < TARGET_SCORE:
         if num_of_retries < RETRY_LIMIT:
