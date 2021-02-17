@@ -1,6 +1,6 @@
 #! /usr/local/bin/python3
 # 2048.py plays the popular game automatically by moving the arrow keys up, right, down and left
-# We can modify this code later to keep playing until a max score is achieved or it reaches a max retry limit
+# The game keeps being retried until a max score is achieved or it reaches a max retry limit
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
