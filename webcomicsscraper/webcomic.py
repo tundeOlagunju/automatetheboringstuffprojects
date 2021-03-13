@@ -9,46 +9,46 @@ class WebComicDownloadState(object):
     SUCCESS = 2
 
 
-
-class C(object):
+class WebComicDownloaddata(object):
     def __init__(self):
-        self._x = None
-
-
-
-    @x.setter
-    def x(self, value):
-        print("setter of x called")
-        self._x = value
-
-# class WebComicDownloaddata(object):
-#     def __init__(self):
-#         self.url = ''
-#         self._last= 0
-#         self.last_tried = ''
-#         self.last_download_state = WebComicDownloadState.NOT_STARTED
-#         self.cache = ''
+        self.url = ''
+        self._last_downloaded_image_link = ''
+        self.last_tried = ''
+        self.last_download_state = WebComicDownloadState.NOT_STARTED
+        self.cache = ''
     
-#     @last.setter  
-#     def last(self, current_img_link):
-#         # if current_img_link and current_img_link != self._last_downloaded_image_link : 
-#         self._last  = current_img_link
+    @property
+    def last_downloaded_image_link(self):
+        return self._last_downloaded_image_link
+    
+    @last_downloaded_image_link.setter  
+    def last(self, current_img_link):
+        if current_img_link and current_img_link != self._last_downloaded_image_link : 
+            self._last  = current_img_link
 
 
 class WebComic(object):
     def __init__(self, download_data):
-        self.comic_html = ''
+        self._comic_html = ''
         self._extractor = None
         self.img_links = []
         self.title = ''
         self.download_state = WebComicDownloadState.NOT_STARTED
         self.download_data = download_data
 
+    @property
+    def extractor(self):
+        return self._extractor
+
     @extractor.setter
     def extractor(self, content_extractor):
         #check if downloaded first
         if self.comic_html:
             self.extractor = content_extractor
+    
+    @property
+    def comic_html(self):
+        return self._extractor
     
     @comic_html.setter
     def comic_html(self, comic_html):
