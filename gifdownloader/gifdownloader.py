@@ -1,5 +1,5 @@
 #! /usr/local/bin/python3
-# #gifdownloader.py - Opens several search results.
+#gifdownloader.py - Opens several search results.
 import  requests, sys, os, bs4, time, json
 from selenium import webdriver
 
@@ -14,8 +14,7 @@ URL = f'https://giphy.com/search/{gif_search_query}?sort=relevant'
 giphy_gifs = 0
 
 driver = webdriver.Chrome()
-driver.get(URL)
-
+driver.get(URL) 
 # Get scroll height
 last_height = driver.execute_script("return document.body.scrollHeight")
 

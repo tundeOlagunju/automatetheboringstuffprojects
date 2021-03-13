@@ -43,6 +43,4 @@ def fill_in_the_gaps(folder, prefix, extension):
         previous = actual_number
 
 
-        
-
 fill_in_the_gaps(".", "spam", ".txt")
