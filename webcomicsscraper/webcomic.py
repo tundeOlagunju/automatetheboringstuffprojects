@@ -3,10 +3,12 @@ from random import random
 import network
 import logging
 
+
 class WebComicDownloadState(object):
     NOT_STARTED = 0
     FAILED_RESPONSE = 1
     SUCCESS = 2
+
 
 
 class WebComicDownloaddata(object):
@@ -27,14 +29,16 @@ class WebComicDownloaddata(object):
             self._last  = current_img_link
 
 
+
+
 class WebComic(object):
     def __init__(self, download_data):
         self._comic_html = ''
         self._extractor = None
         self.img_links = []
         self.title = ''
-        self.download_state = WebComicDownloadState.NOT_STARTED
         self.download_data = download_data
+        self.download_data.last_download_state = WebComicDownloadState.NOT_STARTED
 
     @property
     def extractor(self):
@@ -44,30 +48,27 @@ class WebComic(object):
     def extractor(self, content_extractor):
         #check if downloaded first
         if self.comic_html:
-            self.extractor = content_extractor
+            self._extractor = content_extractor
     
     @property
     def comic_html(self):
-        return self._extractor
+        return self._comic_html
     
     @comic_html.setter
     def comic_html(self, comic_html):
         if comic_html:
-            self.comic_html = comic_html
-            self.download_state = WebComicDownloadState.SUCCESS
+            self._comic_html = comic_html
             self.download_data.last_download_state = WebComicDownloadState.SUCCESS
         else: 
-            self.download_state = WebComicDownloadState.FAILED_RESPONSE
             self.download_data.last_download_state = WebComicDownloadState.FAILED_RESPONSE
             logging.debug('Html content is empty')
 
     def download(self):
         """Downloads the comic url's HTML content"""
         try:
-            html = network.get_html(self.download_data.url)
+            html = network.download_html(self.download_data.url)
             self.comic_html = html
         except Exception as e:
-            self.download_state = WebComicDownloadState.FAILED_RESPONSE
             self.download_data.last_download_state = WebComicDownloadState.FAILED_RESPONSE
             logging.debug('Download failed on URL, %s because of %s', self.download_data.url, str(e) )
 
