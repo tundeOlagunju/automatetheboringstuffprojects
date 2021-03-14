@@ -5,7 +5,50 @@ class ContentExtractor(object):
         self.doc = doc
 
 
-    def extract_img_urls(self):
+    def extract_curr_img_url(self):
+        if not self.doc:
+            return None
+
+        img_tags = self.extract_img_tags()
+        if not img_tags:
+            return None
+
+        # return early if there is only one imag tag on the page
+        if len(img_tags) == 1:
+            return self.get_img_url_from_tag(img_tags[0]) 
+        
+        title = self.extract_title()
+        print(title)
+        img_tag_with_title = self.get_img_tag_with_title(img_tags, title)
+        
+        return self.get_img_url_from_tag(img_tag_with_title)
+        
+        
+    def get_img_url_from_tag(self, img_tag):
+        return img_tag.get('src') if img_tag and img_tag.get('src') else None
+
+    
+    def get_img_tag_with_title(self, img_tags, title):
+        """ Inspect the img_tags' atrributes alt and title and src returns the first tag which contains the title"""
+
+        def get_img_tag(attr, tag, title):
+            title = title.lower()
+            if tag and tag.get(attr):
+                attr_val = tag.get(attr).lower()
+                return tag if title in attr_val or attr_val in title else None
+
+        try_alt , try_title, try_src = [None]*3
+        for tag in img_tags:
+            try_title = get_img_tag('title', tag, title)
+            if not try_title:
+                try_alt = get_img_tag('alt', tag, title)
+                if not try_alt:
+                    try_src = get_img_tag('src', tag, title)
+            if try_alt or try_title or try_src:
+                return try_title or try_alt or try_src
+    
+
+    def extract_img_tags(self):
         """ Extracts all image src links from the html document """
         if self.doc:
             img_tags = self.doc.find_all('img')
@@ -38,11 +81,19 @@ class ContentExtractor(object):
 
 
     def extract_title_from_h_tag(self, h_tag):
+        """Assumptions (in order of accuracy)
+        1. Checks the class attribute value of the h tags which contains 'title'
+        2. For h tags without title, we get the text value of the a_tag in the first h_tag
+        """
         regex = re.compile('.*title.*')
         for h_tag_with_title in self.doc.find_all(h_tag, {'class' : regex}):
             for a_tag in h_tag_with_title.find_all('a'):
                 return a_tag.text
-
+        
+        for h_tag in self.doc.find_all(h_tag):
+            for a_tag in h_tag.find_all('a'):
+                return a_tag.text
+        
 
     def extract_title_from_head(self):
         title_head, og_title = [None] * 2

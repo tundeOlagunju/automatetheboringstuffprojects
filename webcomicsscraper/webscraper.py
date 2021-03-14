@@ -38,15 +38,10 @@ class WebComicScraper(object):
             content_extractor = ContentExtractor(webcomic.comic_html)
             webcomic.extractor = content_extractor
 
-            logging.info('Extracting all image links in %s ....', comicdata.url)
-            webcomic.fetch_img_urls()
-            logging.info('Finished extracting all image links in %s successfully', comicdata.url)
+            logging.info('Extracting current comic image url %s ....', comicdata.url)
+            webcomic.fetch_curr_img_url()
+            logging.info('Current comic image url in %s is %s',comicdata.url, webcomic.download_data.latest_img_url)
             
-            logging.info('Fetching the title in %s ....', comicdata.url)
-            webcomic.fetch_title()
-
-            # Theres still an edge case with title
-            print(webcomic.title)
         
 
         print(jsonpickle.encode(comic_download_data, unpicklable=False))

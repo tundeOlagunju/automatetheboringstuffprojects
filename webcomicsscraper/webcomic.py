@@ -15,19 +15,19 @@ class WebComicDownloadStatus(Enum):
 class WebComicDownloaddata(object):
     def __init__(self):
         self.url = ''
-        self._latest_img_url = ''
+        self.latest_img_url = ''
         self.last_tried = ''
         self.last_download_status = WebComicDownloadStatus.NOT_STARTED.name
         self.cache = ''
     
-    @property
-    def latest_img_url(self):
-        return self._latest_img_url
+    # @property
+    # def latest_img_url(self):
+    #     return self._latest_img_url
     
-    @latest_img_url.setter  
-    def latest_img_url(self, curr_img_url):
-        if curr_img_url and curr_img_url != self._latest_img_url: 
-            self._latest_img_url  = curr_img_url
+    # @latest_img_url.setter  
+    # def latest_img_url(self, curr_img_url):
+    #     if curr_img_url and curr_img_url != self.latest_img_url: 
+    #         self._latest_img_url = curr_img_url
 
 
 
@@ -36,8 +36,6 @@ class WebComic(object):
     def __init__(self, download_data):
         self._comic_html = ''
         self._extractor = None
-        self.img_urls = []
-        self.title = ''
         self.download_data = download_data
         self.download_data.last_download_status = WebComicDownloadStatus.NOT_STARTED.name
 
@@ -73,13 +71,9 @@ class WebComic(object):
             self.download_data.last_download_status = WebComicDownloadStatus.FAILED.name
             logging.debug('Download failed on URL, %s because of %s', self.download_data.url, str(e) )
 
-    def fetch_img_urls(self):
-        img_urls = self.extractor.extract_img_urls()
-        self.img_urls = img_urls
-       
-    def fetch_title(self):
-        title = self.extractor.extract_title()
-        self.title = title
+    def fetch_curr_img_url(self):
+        curr_img_url = self.extractor.extract_curr_img_url()
+        self.download_data.latest_img_url = curr_img_url
 
     def __repr__ (self):
         return f"WebComic: {self.download_data.url}"
