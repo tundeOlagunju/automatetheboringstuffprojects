@@ -20,17 +20,24 @@ def decode_json(json):
     return jsonpickle.decode(prepared_json)
 
 
-def save_image_to_file(res, img_url, domain):
-    img_dir = os.path.join('bin', domain)
-    make_dir(img_dir)
-    # last part of the image url
-    img_file = os.path.basename(img_url)
-    img_file_path = os.path.join(img_dir, img_file)
+# def save_image_to_file(res, img_url, domain):
+#     img_dir = os.path.join('bin', domain)
+#     make_dir(img_dir)
+#     # last part of the image url
+#     img_file = os.path.basename(img_url)
+#     img_file_path = os.path.join(img_dir, img_file)
+#     with open(img_file_path, 'wb') as f:
+#         f.write(res.content)
+
+def save_image_to_file(content, img_file_path):
     with open(img_file_path, 'wb') as f:
-        f.write(res.content)
+        f.write(content)
 
 def make_dir(dir):
     os.makedirs(dir, exist_ok=True)
+
+def join_path(path_a, path_b):
+    return os.path.join(path_a, path_b)
 
 
         
