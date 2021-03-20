@@ -4,8 +4,7 @@ class ContentExtractor(object):
     def __init__(self, doc):
         self.doc = doc
 
-
-    def extract_curr_img_url(self):
+    def extract_latest_img_url(self):
         if not self.doc:
             return None
 
@@ -18,7 +17,6 @@ class ContentExtractor(object):
             return self.get_img_url_from_tag(img_tags[0]) 
         
         title = self.extract_title()
-        print(title)
         img_tag_with_title = self.get_img_tag_with_title(img_tags, title)
         
         return self.get_img_url_from_tag(img_tag_with_title)
@@ -29,12 +27,12 @@ class ContentExtractor(object):
 
     
     def get_img_tag_with_title(self, img_tags, title):
-        """ Inspect the img_tags' atrributes alt and title and src returns the first tag which contains the title"""
+        """ Inspect the img_tags' atrributes alt and title and src returns the first tag which contains the title """
 
         def get_img_tag(attr, tag, title):
-            title = title.lower()
+            title = title.strip().lower()
             if tag and tag.get(attr):
-                attr_val = tag.get(attr).lower()
+                attr_val = tag.get(attr).strip().lower()
                 return tag if title in attr_val or attr_val in title else None
 
         try_alt , try_title, try_src = [None]*3
