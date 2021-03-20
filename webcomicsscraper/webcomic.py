@@ -1,6 +1,8 @@
 import jsonpickle
 from random import random
 import network
+import urls
+import files
 import logging
 from enum import Enum
 
@@ -15,10 +17,11 @@ class WebComicDownloadStatus(Enum):
 class WebComicDownloaddata(object):
     def __init__(self):
         self.url = ''
-        self.latest_img_url = ''
+        self.latest_img_url = None
         self.last_tried = ''
         self.last_download_status = WebComicDownloadStatus.NOT_STARTED.name
-        self.cache = ''
+        # add download status for images we need one tbh
+
     
     # @property
     # def latest_img_url(self):
@@ -36,7 +39,9 @@ class WebComic(object):
     def __init__(self, download_data):
         self._comic_html = ''
         self._extractor = None
+        self.latest_img_content = ''
         self.download_data = download_data
+        self.download_data.latest_img_url  = ''
         self.download_data.last_download_status = WebComicDownloadStatus.NOT_STARTED.name
 
     @property
@@ -58,33 +63,52 @@ class WebComic(object):
         if comic_html:
             self._comic_html = comic_html
             self.download_data.last_download_status = WebComicDownloadStatus.SUCCESS.name
+            logging.info('Page download successful for %s', self.download_data.url)
         else: 
             self.download_data.last_download_status = WebComicDownloadStatus.FAILED.name
             logging.debug('Html content is empty')
 
-    def download(self):
+    def download_page(self):
         """Downloads the comic url's HTML content"""
         try:
+            logging.info('Downloading page %s ....', self.download_data.url)
             html = network.download_html(self.download_data.url)
             self.comic_html = html
         except Exception as e:
             self.download_data.last_download_status = WebComicDownloadStatus.FAILED.name
             logging.debug('Download failed on URL, %s because of %s', self.download_data.url, str(e) )
 
-    def fetch_curr_img_url(self):
-        curr_img_url = self.extractor.extract_curr_img_url()
-        self.download_data.latest_img_url = curr_img_url
+    def download_latest_image(self):
+        curr_img_url = self.extractor.extract_latest_img_url()
+        if curr_img_url and curr_img_url != self.download_data.latest_img_url:
+            try:
+                logging.info('Downloading latest image for %s', self.download_data.url)   
+                img_content = network.download_image(curr_img_url)
+                self.download_data.latest_img_url = curr_img_url
+                self.latest_img_content = img_content
+            except Exception as e:
+                logging.debug('Exception while trying to download image %s because of %s', curr_img_url, str(e) )
+        else:
+            logging.debug('Not downloading current image for %s because there is no new image', self.download_data.url)
+
+    def save_image(self):
+        if self.latest_img_content:
+            try:
+                logging.info('Saving latest image for %s', self.download_data.url) 
+                img_file_path = urls.get_img_file_path(self.download_data.url, self.download_data.latest_img_url)
+                files.save_image_to_file(self.latest_img_content, img_file_path)
+                logging.debug('Image saved successfully to path %s', img_file_path)
+            except Exception as e: 
+                logging.debug('Exception occured while trying to save image to path %s because of %s', img_file_path, str(e))
+        else:
+            logging.debug('Cannot save image. Download the image first')
+        
 
     def __repr__ (self):
         return f"WebComic: {self.download_data.url}"
     
-    def get_dir_path(self):
-        """Every webcomic has its directory where images are saved"""
-        pass
-        
 
-
-
+    
 # things = jsonpickle.decode('[{"py/object": "__main__.WebComic", "url": "Awesome"}, {"py/object": "__main__.Thing", "url": "Wonderful"}]')
 
 # for thing in things:
