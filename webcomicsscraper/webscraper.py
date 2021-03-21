@@ -4,7 +4,7 @@ from webcomic import WebComicDownloadStatus, WebComicDownloaddata, WebComic
 
 import logging
 import jsonpickle
-import sys
+import sys, json
 
 class WebComicScraper(object):
 
@@ -15,30 +15,32 @@ class WebComicScraper(object):
         logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
         logging.info('Scraping has started')
         
-        input_json = files.read_json_file(self.file_path)
-        comic_download_data = files.decode_json(input_json)
-        logging.info('Input json contains List of webcomics %s', [data.url for data in comic_download_data])
+        input_data = files.read_json_file(self.file_path)
+        logging.info('Input json contains List of webcomics %s', [ data['url'] for data in input_data])
         
-
-        for i, comicdata in enumerate(comic_download_data):
-            if not comicdata.url:
-                comicdata.last_download_status = WebComicDownloadStatus.FAILED.name
+        output_data = []
+        for i, comic_data in enumerate(input_data):
+            if not 'url' in comic_data:
                 logging.info('Webcomic at position %s does not contain a url. Skipping..', i+1)
                 continue
 
-            webcomic = WebComic(comicdata)
-            webcomic.download_page()
+            webcomic = WebComic()
+            download_data = WebComicDownloaddata(comic_data)
+            webcomic.download_data = download_data 
 
-            if webcomic.download_data.last_download_status != WebComicDownloadStatus.SUCCESS.name:
-                logging.info('Skipping %s as page download was not successful', comicdata.url)
+            webcomic.download_page()
+            if webcomic.page_download_status != WebComicDownloadStatus.SUCCESS.name:
+                logging.info('Skipping %s as page download was not successful', comic_data['url'])
                 continue
             
             content_extractor = ContentExtractor(webcomic.comic_html)
             webcomic.extractor = content_extractor
+
             webcomic.download_latest_image() 
             webcomic.save_image()
+            output_data.append(webcomic.download_data)
 
-        print(jsonpickle.encode(comic_download_data, unpicklable=False))
+        print(jsonpickle.encode(output_data, unpicklable=False))
         
 
 if __name__ == '__main__':
