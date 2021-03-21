@@ -4,6 +4,8 @@ class ContentExtractor(object):
     def __init__(self, doc):
         self.doc = doc
 
+    # change this to extract latest image url by checking if the url contains title and
+    # if not by getting the biggest image url
     def extract_latest_img_url(self):
         if not self.doc:
             return None
