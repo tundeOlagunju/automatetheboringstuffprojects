@@ -21,17 +21,6 @@ class WebComicDownloaddata(object):
         self.last_tried = data['last_tried'] if 'latest_tried' in data else ''
         self.last_download_status = WebComicDownloadStatus.NOT_STARTED.name
 
-    # @property
-    # def latest_img_url(self):
-    #     return self._latest_img_url
-    
-    # @latest_img_url.setter  
-    # def latest_img_url(self, curr_img_url):
-    #     if curr_img_url and curr_img_url != self.latest_img_url: 
-    #         self._latest_img_url = curr_img_url
-
-
-
 
 class WebComic(object):
     def __init__(self):
@@ -40,13 +29,11 @@ class WebComic(object):
         self.latest_img_content = ''
         self.page_download_status = WebComicDownloadStatus.NOT_STARTED.name
         self.download_data = None
-    
-    
+     
     @property
     def comic_html(self):
         return self._comic_html
-
-    
+   
     @comic_html.setter
     def comic_html(self, comic_html):
         if comic_html:
@@ -56,7 +43,6 @@ class WebComic(object):
         else: 
             self.page_download_status = WebComicDownloadStatus.FAILED.name
             logging.debug('Html content is empty')
-
 
 
     def download_page(self):
@@ -70,7 +56,6 @@ class WebComic(object):
             logging.debug('Download failed on URL, %s because of %s', self.download_data.url, str(e) )
 
 
-
     # Change to download all images that have that title, 
     # create a folder to store those images if they are more than one
     # look for a way to delete old image if a new one is present
@@ -80,7 +65,7 @@ class WebComic(object):
         if curr_img_url and curr_img_url != self.download_data.latest_img_url:
             try:
                 logging.info('Downloading latest image for %s', self.download_data.url)   
-                img_content = network.download_image(curr_img_url, self.download_data.url)
+                img_content = network.fetch_url(curr_img_url)[1]
                 self.download_data.latest_img_url = curr_img_url
                 self.latest_img_content = img_content
             except Exception as e:

@@ -33,7 +33,7 @@ class WebComicScraper(object):
                 logging.info('Skipping %s as page download was not successful', comic_data['url'])
                 continue
             
-            content_extractor = ContentExtractor(webcomic.comic_html)
+            content_extractor = ContentExtractor(webcomic.comic_html, webcomic.download_data.url)
             webcomic.extractor = content_extractor
 
             webcomic.download_latest_image() 
