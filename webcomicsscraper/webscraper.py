@@ -13,11 +13,24 @@ class WebComicScraper(object):
     
     def scrape(self):
         logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+        
+        if not self.file_path:
+            logging.debug('Exiting because json input file was not provided. Scraping did not start')
+            exit()
+
+        try:
+            input_data = files.read_json_file(self.file_path)
+        except Exception:
+            logging.debug('Exiting because no data in the input file. Scraping did not start')
+            exit()
+
+        if not input_data:
+            logging.debug('Exiting because no data in the input file. Scraping did not start')
+            exit()
+
+        logging.info('Input json contains List of webcomics %s', [ data['url'] for data in input_data])  
         logging.info('Scraping has started')
-        
-        input_data = files.read_json_file(self.file_path)
-        logging.info('Input json contains List of webcomics %s', [ data['url'] for data in input_data])
-        
+
         output_data = []
         for i, comic_data in enumerate(input_data):
             if not 'url' in comic_data:
@@ -31,16 +44,20 @@ class WebComicScraper(object):
             webcomic.download_page()
             if webcomic.page_download_status != WebComicDownloadStatus.SUCCESS.name:
                 logging.info('Skipping %s as page download was not successful', comic_data['url'])
+                output_data.append(webcomic.download_data)
                 continue
             
             content_extractor = ContentExtractor(webcomic.comic_html, webcomic.download_data.url)
             webcomic.extractor = content_extractor
 
-            webcomic.download_latest_image() 
+            webcomic.download_latest_image()
             webcomic.save_image()
+
             output_data.append(webcomic.download_data)
 
-        print(jsonpickle.encode(output_data, unpicklable=False))
+        output_json = jsonpickle.encode(output_data, unpicklable=False)
+        files.save_json(self.file_path, output_json)
+        logging.info('Output data saved successfully. Scraping has ended')
         
 
 if __name__ == '__main__':

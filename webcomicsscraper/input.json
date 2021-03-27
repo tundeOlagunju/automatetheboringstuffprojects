@@ -1,32 +1,72 @@
 [
     {
-        "url": "http://www.lefthandedtoons.com/"
+        "url": "http://www.lefthandedtoons.com/",
+        "latest_img_url": "http://www.lefthandedtoons.com/toons/drew_ariotheory.gif",
+        "last_success_download": "2021-03-27 11:28:59",
+        "last_tried": "2021-03-27 11:28:58",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "http://www.lunarbaboon.com/"
+        "url": "http://www.lunarbaboon.com/",
+        "latest_img_url": "http://www.lunarbaboon.com/storage/comicfullleft.jpg",
+        "last_success_download": "2021-03-27 11:29:00",
+        "last_tried": "2021-03-27 11:29:00",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": " http://www.happletea.com/"
+        "url": " http://www.happletea.com/",
+        "latest_img_url": "http://www.happletea.com/wp-content/uploads/05-31-2019.jpg",
+        "last_success_download": "2021-03-27 11:29:01",
+        "last_tried": "2021-03-27 11:29:01",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "http://nonadventures.com/"
+        "url": "http://nonadventures.com/",
+        "latest_img_url": "http://nonadventures.com/comics/2019-08-05-483.png",
+        "last_success_download": "2021-03-27 11:29:02",
+        "last_tried": "2021-03-27 11:29:02",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "https://www.savagechickens.com/"
+        "url": "https://www.savagechickens.com/",
+        "latest_img_url": "https://www.savagechickens.com/wp-content/uploads/chickennervousdog.jpg",
+        "last_success_download": "2021-03-27 11:29:04",
+        "last_tried": "2021-03-27 11:29:03",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "https://www.conniewonnie.com/"
+        "url": "https://www.conniewonnie.com/",
+        "latest_img_url": "https://1.bp.blogspot.com/-XP7vOm0_7pw/YF0esBLfimI/AAAAAAAAa3A/8r8rQtCKP04zRlSuw2O7OlxKbPOLmrsxwCLcBGAsYHQ/s16000/V2_Sketch_2021_I_Still_Love_NY_w500.jpg",
+        "last_success_download": "2021-03-27 11:29:04",
+        "last_tried": "2021-03-27 11:29:04",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "http://bird-boy.com/"
+        "url": "http://bird-boy.com/",
+        "latest_img_url": "",
+        "last_success_download": "",
+        "last_tried": "",
+        "last_download_status": "NOT_STARTED"
     },
     {
-        "url": " http://www.harkavagrant.com/"
+        "url": " http://www.harkavagrant.com/",
+        "latest_img_url": "http://www.harkavagrant.com/nonsense/thankyou.png",
+        "last_success_download": "2021-03-27 11:29:07",
+        "last_tried": "2021-03-27 11:29:07",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "https://www.exocomics.com/"
+        "url": "https://www.exocomics.com/",
+        "latest_img_url": "https://www.exocomics.com/wp-content/uploads/654.jpg",
+        "last_success_download": "2021-03-27 11:29:09",
+        "last_tried": "2021-03-27 11:29:08",
+        "last_download_status": "SUCCESS"
     },
     {
-        "url": "https://xkcd.com/"
+        "url": "https://xkcd.com/",
+        "latest_img_url": "http://imgs.xkcd.com/comics/mask_opinions.png",
+        "last_success_download": "2021-03-27 11:29:09",
+        "last_tried": "2021-03-27 11:29:09",
+        "last_download_status": "SUCCESS"
     }
 ]

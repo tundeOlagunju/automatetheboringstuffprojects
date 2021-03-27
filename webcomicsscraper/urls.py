@@ -5,6 +5,10 @@ import files
 # prep img url
 
 def refine_img_url(img_url, url):
+    """
+    prepares and cleans an image url to make it downloadable.
+    adds http or https to the url, cleans any gibberish after the extension name
+    """
     prep_img_url = prepare_img_url(img_url, url)
     cleaned_img_url  = clean_img_file_url(prep_img_url) #clean the end part of the url 
     return cleaned_img_url
